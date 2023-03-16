@@ -28,24 +28,28 @@ def portal():
 def register():
     error = None
     if request.method == 'POST':
-        result = valid_name(request.form['Email'], request.form['Password'],request.form['Email'])
-        if result:
-            return render_template('register.html', error=error, result=result)
+        password = request.form['Password']
+        password_check = request.form['Password_check']
+        if password != password_check:
+            return render_template('failed_register.html')
         else:
-            error = 'invalid input name'
+            result = valid_name(request.form['Email'], request.form['Password'])
+            if result:
+                return render_template('login.html', error=error, result=result)
+            else:
+                error = 'invalid input name'
     # get method for populating the table before taking actions
     #if request.method == 'GET':
         #result = populate_add()
         #if result:
             #return render_template('register.html', error=error, result=result)
-
     return render_template('register.html', error=error)
 
 
 # function for running sql query to add name
 def valid_name(email, password, pid=1):
     connection = sql.connect('user.sqlite')
-    connection.execute('CREATE TABLE IF NOT EXISTS users(pid INTEGER, UserID TEXT, Password TEXT, Email TEXT);')
+    #connection.execute('CREATE TABLE IF NOT EXISTS users(pid INTEGER, UserID TEXT, Password TEXT, Email TEXT);')
 
     # try function for incrementing the pid by 1 for a unique pid value for each patient not ideal but temporary
     # temporary solution, not ideal
@@ -62,7 +66,9 @@ def valid_name(email, password, pid=1):
     #connection.execute('INSERT INTO hashed_password (email, password, hashed_password) VALUES (?,?,?,?);',(email, password, pass_hex))
     #connection.commit()
     # displays patients in descending order of pid which is also chronologically the most recent patient listed first
-    cursor = connection.execute('INSERT INTO hashed_password (email, password, hashed_password) VALUES (?,?,?,?);',(email, password, pass_hex))
+    connection.execute('INSERT INTO user_hashed (email, password, hashed_password) VALUES (?,?,?);',(email, password, pass_hex))
+    connection.commit()
+    cursor = connection.execute('SELECT * FROM user_hashed WHERE email = ? AND password = ? AND hashed_password = ?',(email, password, pass_hex))
     # connection.execute('DROP TABLE users;')
     return cursor.fetchall()
 
