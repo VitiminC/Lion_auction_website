@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title></title>
+</head>
+<h1>My Information</h1>
+<body>
+
+<div class="form-group" style="border:solid; width: 400px; display: inline-block;">
+    <div class="card-body" style = "display: inline-block;">
+        <label for="email"><b>Email</b></label>
+            <input type="text" name="email_address" required class="form-control" value = {{ email_address }}>
+        <label for="first_name"><b>First Name</b></label>
+            <input type="text" name="first_name" required class="form-control" value = {{ first_name }}>
+        <label for="last_name"><b>Last Name</b></label>
+            <input type="text" name="last_name" required class="form-control" value = {{ last_name }}>
+        <label for="gender"><b>Gender</b></label>
+            <input type="text" name="gender" required class="form-control" value = {{ gender }}>
+        <label for="age"><b>Age</b></label>
+            <input type="text" name="age" required class="form-control" value = {{ age }}>
+        <label for="city"><b>City</b></label>
+            <input type="text" name="city" required class="form-control" value = {{ city }}>
+        <label for="state"><b>State</b></label>
+            <input type="text" name="state" required class="form-control" value = {{ state }}>
+        <label for="zip"><b>Zip Code</b></label>
+            <input type="text" name="zip" required class="form-control" value = {{ zip }}>
+        <label for="street_num"><b>Street Number</b></label>
+            <input type="text" name="street_num" required class="form-control" value = {{ street_num }}>
+        <label for="street_num"><b>Street Name</b></label>
+            <input type="text" name="street_name" required class="form-control" value = {{ street_name }}>
+    </div>
+</div>
+<div class="form-group" style="border:solid; width: 400px; display: inline-block;">
+    <div class="card-body" style = "display: inline-block;">
+        <label for="email"><b>Credit Card No.(last 4 digits)</b></label>
+            <input type="text" name="card_no" required class="form-control" value = {{ card_num }}>
+        <label for="card number"><b>Card Type</b></label>
+            <input type="text" name="card_type" required class="form-control" value = {{ card_type }}>
+        <label for="exp_month"><b>Exp Month</b></label>
+            <input type="text" name="exp_month" required class="form-control" value = {{ card_exp_month }}>
+        <label for="exp_year"><b>Exp Year</b></label>
+            <input type="text" name="gender" required class="form-control" value = {{ card_exp_year }}>
+        <label for="security"><b>Security</b></label>
+            <input type="text" name="security" required class="form-control" value =***>
+    </div>
+    <a class="btn btn-success" href="/go_back" role="button">Go Back</a>
+</div>
+
+</body>
+</html>
