@@ -18,7 +18,7 @@
         .button2 {background-color: #0A6EDE;} /* Blue */
         .button3 {background-color: #A50E0E;} /* Red */
         .button4 {background-color: #0EA545;} /* Green */
-        .button5 {background-color: #555555;} /* Black */
+        .button5 {background-color: #FFA200;} /* Black */
 
         .button:hover {
             background-color: #000000;
@@ -34,16 +34,53 @@
 <body>
 <div class="container-sm">
     <div class="card-body">
-        <h2 class="card-title">Welcome to Lion Auction!</h2>
+        <h2 class="card-title">Navigation</h2>
         <a class="button button2" href="/myinformation" role="button">My Information</a>
         <a class="button button4" href="/browse" role="button">Browse</a>
         <a class="button button4" href="/my_bids" role="button">My Bids</a>
         <a class="button button4" href="/my_listings" role="button">My Listings</a>
         <a class="button button3" href="/" role="button">Logout</a>
-
+    </div>
+        <div class="card-body" style = "display: inline-block;">
+        <label for="ProductID"><b>Product ID</b></label>
+            <form id = 'formset' action="/filter_output" method="POST">
+                <input type="text" name="id" required class="form-control">
+                <a class="button button4" type="submit" role="button">Place a Bid</a>
+            </form>
+            <input class="button button3" value="Go back!" onclick="history.back()">
+        </div>
+    </div>
+<div class="container-sm">
+    <div class="card-body">
+        <h2 class="card-title">Product List</h2>
+        <table class="table table-dark clickable-row">
+            <tr>
+                <th scope="col"> ID</th>
+                <th scope="col"> Title</th>
+                <th scope="col"> Product Name</th>
+                <th scope="col"> Description</th>
+                <th scope="col"> Reserve Price</th>
+                <th scope="col"> Quantity</th>
+                <th scope="col"> Bids</th>
+                <th scope="col"> Status</th>
+            </tr>
+            <tbody>
+            {% for email, id, category, title, product_name, description, quantity, price, bids, status in result %}
+                <tr>
+                    <td> {{ id }} </td>
+                    <td> {{ title }} </td>
+                    <td> {{ product_name }} </td>
+                    <td> {{ description }} </td>
+                    <td> {{ price }} </td>
+                    <td> {{ quantity }} </td>
+                    <td> {{ bids }} </td>
+                    <td> {{ status }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>

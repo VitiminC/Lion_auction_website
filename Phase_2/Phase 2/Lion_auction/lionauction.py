@@ -48,11 +48,6 @@ def valid_name(email, password, pid=1):
     cursor = connection.execute('SELECT * FROM user_hashed WHERE email = ? AND password = ? AND hashed_password = ?',(email, password, pass_hex))
     return cursor.fetchall()
 
-def populate_add():
-    connection = sql.connect('user.sqlite')
-    cursor = connection.execute('SELECT * FROM Users ORDER BY pid DESC;')
-    return cursor.fetchall()
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     error = None
@@ -66,12 +61,6 @@ def login():
         else:
             error = 'invalid Email or Password'
             return render_template('failed.html', error=error)
-
-    # get method for populating the table before taking actions
-    if request.method == 'GET':
-        result = populate()
-        if result:
-            return render_template('login.html', error=error, result=result)
 
     return render_template('login.html', error=error)
 
@@ -177,14 +166,83 @@ def myinformation():
         routing = seller[0][1]
         bank_num = seller[0][2]
         balance = seller[0][3]
-        return render_template('myinfo_vendor.html', zip=zipcode, street_num=street_num, street_name=street_name,
-                                email_address=email_address, name=name, city=city, state=state,
-                                routing=routing, bank_num=bank_num, balance=balance, phone=phone)
+        return render_template('myinfo_vendor.html', routing=routing, bank_num=bank_num, balance=balance)
 
     else:
         return render_template('myinfo.html', email_address=email)
 
+@app.route('/browse', methods=['POST', 'GET'])
+def browse():
+    return render_template('browse.html')
 
+#Beauty Products Section
+@app.route('/BeautyProducts', methods=['POST', 'GET'])
+def BeautyProducts():
+    return render_template('BeautyProducts.html')
+@app.route('/Makeup', methods=['POST', 'GET'])
+def Makeup():
+    return render_template('Makeup.html')
+@app.route('/BrushesApplicators', methods=['POST', 'GET'])
+def BrushesApplicators():
+    resp = make_response(redirect(url_for('filter_output')))
+    resp.set_cookie('category', "Brushes & Applicators")
+    return resp
+@app.route('/Face', methods=['POST', 'GET'])
+def Face():
+    resp = make_response(redirect(url_for('filter_output')))
+    resp.set_cookie('category', "Face")
+    return resp
+@app.route('/Lip', methods=['POST', 'GET'])
+def Lip():
+    resp = make_response(redirect(url_for('filter_output')))
+    resp.set_cookie('category', "Lip")
+    return resp
+
+#Clothing Section
+@app.route('/Clothing', methods=['POST', 'GET'])
+def clothing():
+    return render_template('clothing.html')
+@app.route('/bottoms', methods=['POST', 'GET'])
+def bottoms():
+    return render_template('bottoms.html')
+@app.route('/jeans', methods=['POST', 'GET'])
+def jeans():
+    resp = make_response(redirect(url_for('filter_output')))
+    resp.set_cookie('category', "Jeans")
+    return resp
+@app.route('/pants', methods=['POST', 'GET'])
+def pants():
+    resp = make_response(redirect(url_for('filter_output')))
+    resp.set_cookie('category', "Pants")
+    return resp
+@app.route('/skirts', methods=['POST', 'GET'])
+def skirts():
+    resp = make_response(redirect(url_for('filter_output')))
+    resp.set_cookie('category', "Skirts")
+    return resp
+@app.route('/tops', methods=['POST', 'GET'])
+def tops():
+    return render_template('tops.html')
+@app.route('/bodysuits', methods=['POST', 'GET'])
+def bodysuits():
+    resp = make_response(redirect(url_for('filter_output')))
+    resp.set_cookie('category', "Bodysuits")
+    return resp
+@app.route('/tshirts', methods=['POST', 'GET'])
+def tshirts():
+    resp = make_response(redirect(url_for('filter_output')))
+    resp.set_cookie('category', "T-Shirts")
+    return resp
+@app.route('/longsleeves', methods=['POST', 'GET'])
+def longsleeves():
+    resp = make_response(redirect(url_for('filter_output')))
+    resp.set_cookie('category', "Long Sleeves")
+    return resp
+
+@app.route('/filter_output', methods=['POST', 'GET'])
+def filter_output():
+    result = populate(request.cookies.get('category'))
+    return render_template('filter_output.html', result=result)
 def valid_login(Email, Password, pid=1):
     encoded_password = Password.encode('utf-8')
     hashed_password = hashlib.sha1(encoded_password)
@@ -193,9 +251,9 @@ def valid_login(Email, Password, pid=1):
     cursor = connection.execute('SELECT COUNT(email) FROM user_hashed WHERE email = ? AND hashed_password = ?;', (Email, pass_hex))
     return cursor.fetchall()[0][0]
 
-def populate():
-    connection = sql.connect('database.db')
-    cursor = connection.execute('SELECT * FROM users ORDER BY pid DESC;')
+def populate(category):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Category = ? ORDER BY Reserve_Price ASC;',(category,))
     return cursor.fetchall()
 
 def is_bidder(email):
