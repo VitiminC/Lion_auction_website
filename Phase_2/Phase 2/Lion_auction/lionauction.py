@@ -9,7 +9,7 @@ host = 'http://127.0.0.1:5000/'
 @app.route('/')
 # Set default display of webpage to portal.html
 def index():
-    return render_template('portal.html')
+    return render_template('browse.html')
 
 @app.route('/go_back')
 def go_back():
@@ -182,21 +182,6 @@ def BeautyProducts():
 @app.route('/Makeup', methods=['POST', 'GET'])
 def Makeup():
     return render_template('Makeup.html')
-@app.route('/BrushesApplicators', methods=['POST', 'GET'])
-def BrushesApplicators():
-    resp = make_response(redirect(url_for('filter_output')))
-    resp.set_cookie('category', "Brushes & Applicators")
-    return resp
-@app.route('/Face', methods=['POST', 'GET'])
-def Face():
-    resp = make_response(redirect(url_for('filter_output')))
-    resp.set_cookie('category', "Face")
-    return resp
-@app.route('/Lip', methods=['POST', 'GET'])
-def Lip():
-    resp = make_response(redirect(url_for('filter_output')))
-    resp.set_cookie('category', "Lip")
-    return resp
 
 #Clothing Section
 @app.route('/Clothing', methods=['POST', 'GET'])
@@ -205,44 +190,129 @@ def clothing():
 @app.route('/bottoms', methods=['POST', 'GET'])
 def bottoms():
     return render_template('bottoms.html')
-@app.route('/jeans', methods=['POST', 'GET'])
-def jeans():
-    resp = make_response(redirect(url_for('filter_output')))
-    resp.set_cookie('category', "Jeans")
-    return resp
-@app.route('/pants', methods=['POST', 'GET'])
-def pants():
-    resp = make_response(redirect(url_for('filter_output')))
-    resp.set_cookie('category', "Pants")
-    return resp
-@app.route('/skirts', methods=['POST', 'GET'])
-def skirts():
-    resp = make_response(redirect(url_for('filter_output')))
-    resp.set_cookie('category', "Skirts")
-    return resp
 @app.route('/tops', methods=['POST', 'GET'])
 def tops():
     return render_template('tops.html')
-@app.route('/bodysuits', methods=['POST', 'GET'])
-def bodysuits():
-    resp = make_response(redirect(url_for('filter_output')))
-    resp.set_cookie('category', "Bodysuits")
-    return resp
-@app.route('/tshirts', methods=['POST', 'GET'])
-def tshirts():
-    resp = make_response(redirect(url_for('filter_output')))
-    resp.set_cookie('category', "T-Shirts")
-    return resp
-@app.route('/longsleeves', methods=['POST', 'GET'])
-def longsleeves():
-    resp = make_response(redirect(url_for('filter_output')))
-    resp.set_cookie('category', "Long Sleeves")
-    return resp
+@app.route('/sleepwear', methods=['POST', 'GET'])
+def sleepwear():
+    return render_template('sleepwear.html')
 
+#Electrical
+@app.route('/ElectricalSupplies', methods=['POST', 'GET'])
+def ElectricalSupplies():
+    return render_template('electricalsupplies.html')
+@app.route('/cellphones', methods=['POST', 'GET'])
+def cellphones():
+    return render_template('cellphones.html')
+@app.route('/tv', methods=['POST', 'GET'])
+def tv():
+    return render_template('tv.html')
+@app.route('/wearable', methods=['POST', 'GET'])
+def wearable():
+    return render_template('wearable.html')
+
+#Grocery
+@app.route('/grocery', methods=['POST', 'GET'])
+def grocery():
+    return render_template('grocery.html')
+@app.route('/bakery', methods=['POST', 'GET'])
+def bakery():
+    return render_template('bakery.html')
+@app.route('/meat', methods=['POST', 'GET'])
+def meat():
+    return render_template('meat.html')
+
+#health
+@app.route('/PharmacyHealthWellness', methods=['POST', 'GET'])
+def PharmacyHealthWellness():
+    return render_template('PharmacyHealthWellness.html')
+@app.route('/healthcare', methods=['POST', 'GET'])
+def healthcare():
+    return render_template('healthcare.html')
+@app.route('/wellness', methods=['POST', 'GET'])
+def wellness():
+    return render_template('wellness.html')
+
+#kitchen
+@app.route('/Kitchen', methods=['POST', 'GET'])
+def Kitchen():
+    return render_template('Kitchen.html')
+@app.route('/cooking', methods=['POST', 'GET'])
+def cooking():
+    return render_template('cooking.html')
+@app.route('/cabinets', methods=['POST', 'GET'])
+def cabinets():
+    return render_template('cabinets.html')
+@app.route('/sinks', methods=['POST', 'GET'])
+def sinks():
+    return render_template('sinks.html')
+
+#outdoor
+@app.route('/OutdoorDecor', methods=['POST', 'GET'])
+def OutdoorDecor():
+    return render_template('OutdoorDecor.html')
+@app.route('/lighting', methods=['POST', 'GET'])
+def lighting():
+    return render_template('lighting.html')
+@app.route('/furniture', methods=['POST', 'GET'])
+def furniture():
+    return render_template('furniture.html')
+@app.route('/cushions', methods=['POST', 'GET'])
+def cushions():
+    return render_template('cushions.html')
+
+#pets
+@app.route('/Pets', methods=['POST', 'GET'])
+def Pets():
+    return render_template('Pets.html')
+@app.route('/cats', methods=['POST', 'GET'])
+def cats():
+    return render_template('cats.html')
+@app.route('/dogs', methods=['POST', 'GET'])
+def dogs():
+    return render_template('dogs.html')
+
+#sports
+@app.route('/SportsOutdoors', methods=['POST', 'GET'])
+def SportsOutdoors():
+    return render_template('SportsOutdoors.html')
+@app.route('/exercise', methods=['POST', 'GET'])
+def exercise():
+    return render_template('exercise.html')
+@app.route('/sports', methods=['POST', 'GET'])
+def sports():
+    return render_template('sports.html')
+@app.route('/bikes', methods=['POST', 'GET'])
+def bikes():
+    return render_template('bikes.html')
+
+#toys
+@app.route('/ToysVideoGames', methods=['POST', 'GET'])
+def ToysVideoGames():
+    return render_template('ToysVideoGames.html')
+@app.route('/toys', methods=['POST', 'GET'])
+def toys():
+    return render_template('toys.html')
+@app.route('/videogames', methods=['POST', 'GET'])
+def videogames():
+    return render_template('videogames.html')
+
+
+
+
+
+
+#Routed Output Page
 @app.route('/filter_output', methods=['POST', 'GET'])
 def filter_output():
-    result = populate(request.cookies.get('category'))
-    return render_template('filter_output.html', result=result)
+    if request.method == 'POST':
+        category = request.form["category"]
+        result = populate(category)
+        return render_template('filter_output.html', result=result)
+@app.route('/bid', methods=['POST', 'GET'])
+def bid():
+    return render_template('bid.html')
+
 def valid_login(Email, Password, pid=1):
     encoded_password = Password.encode('utf-8')
     hashed_password = hashlib.sha1(encoded_password)

@@ -44,10 +44,11 @@
 </div>
     <div class="container-sm">
         <div class="card-body">
-            <h2 class="card-title">Choose A Tertiary Beauty Products Category</h2>
-            <a class="button button5" href="/bodysuits" role="button">Bodysuits</a>
-            <a class="button button5" href="/tshirts" role="button">T-Shirts</a>
-            <a class="button button5" href="/longsleeves" role="button">Long Sleeves</a>
+            <form id = 'formset' action="/filter_output" method="POST">
+                <button class="button button5" type="submit" role="button" name="category" value = "Bodysuits">Bodysuits</button>
+                <button class="button button5" type="submit" role="button" name="category" value = "T-Shirts">T-Shirts</button>
+                <button class="button button5" type="submit" role="button" name="category" value = "Long Sleeves">Long Sleeves</button>
+            </form>
         </div>
         <input class="button button3" value="Go back!" onclick="history.back()">
     </div>
