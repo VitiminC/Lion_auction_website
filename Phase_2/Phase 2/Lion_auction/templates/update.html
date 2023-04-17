@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <style>
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: 2px solid black;
+            color: black;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 10px;
+                }
+        .button2 {background-color: #0A6EDE;} /* Blue */
+        .button3 {background-color: #A50E0E;} /* Red */
+        .button4 {background-color: #0EA545;} /* Green */
+        .button5 {background-color: #555555;} /* Black */
+
+        .button:hover {
+            background-color: #000000;
+            color: white;
+        }
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title></title>
+</head>
+<body>
+<div class="container-sm">
+    <div class="card-body">
+        <h2 class="card-title">Navigation</h2>
+        <a class="button button2" href="/myinformation" role="button">My Information</a>
+        <a class="button button4" href="/browse" role="button">Browse</a>
+        <a class="button button4" href="/my_bids" role="button">My Bids</a>
+        <a class="button button4" href="/my_listings" role="button">My Listings</a>
+        <a class="button button3" href="/" role="button">Logout</a>
+
+    </div>
+</div>
+<div class="form-group" style="border:solid; width: 400px; display: inline-block;">
+    <div class="card-body" style = "display: inline-block;">
+        <form id = 'formset' action="/updater" method="POST">
+            <label for="id"><b>Listing ID</b></label>
+                <input type="text" name="id" required class="form-control" value = {{ id }}>
+            <label for="category"><b>Category</b></label>
+            <br>
+            <select name="category" id="category">
+                <option value={{ category }}>{{ category }}</option>
+                <option value="55-Inch Tvs">55-Inch Tvs</option>
+                <option value="65-Inch Tvs">65-Inch Tvs</option>
+                <option value="75-Inch Tvs">75-Inch Tvs</option>
+                <option value="Apple Watch">Apple Watch</option>
+                <option value="Bakery & Bread">Bakery & Bread</option>
+                <option value="Base Cabinets">Base Cabinets</option>
+                <option value="Baseball">Baseball</option>
+                <option value="Basketball">Basketball</option>
+                <option value="Bath Robes">Bath Robes</option>
+                <option value="Beef & Lamb">Beef & Lamb</option>
+                <option value="Bodysuits">Bodysuits</option>
+                <option value="Bottoms">Clothing Bottoms</option>
+                <option value="Boxing & Mma">Boxing & Mma</option>
+                <option value="Brushes & Applicators">Make-up Brushes & Applicators</option>
+                <option value="Cat Dry Food">Cat Dry Food</option>
+                <option value="Cat Wet Food">Cat Wet Food</option>
+                <option value="Cookies & Brownies">Cookies & Brownies</option>
+                <option value="Cooking Accessories">Cooking Accessories</option>
+                <option value="Cough, Cold & Flu">Cough, Cold & Flu</option>
+                <option value="Dog Beds">Dog Beds</option>
+                <option value="Dog Dry Food">Dog Dry Food</option>
+                <option value="Dog Wet Food">Dog Wet Food</option>
+                <option value="Exercise Machines">Exercise Machines</option>
+                <option value="Eye Care">Eye Care</option>
+                <option value="Face">Face (makeup/sunscreen)</option>
+                <option value="Fresh Produce">Fresh Produce</option>
+                <option value="Baseball">Baseball</option>
+                <option value="Health Care">Health Care</option>
+                <option value="High Cabinets">High Cabinets</option>
+                <option value="Indoor Plants">Indoor Plants</option>
+                <option value="Iphone">Iphone</option>
+                <option value="Jeans">Jeans</option>
+                <option value="Kidkraft Bancroft Wooden Playhouse">Kidkraft Bancroft Wooden Playhouse</option>
+                <option value="Kitchen Cabinets">Kitchen Cabinets</option>
+                <option value="Kitchen Faucets">Kitchen Faucets</option>
+                <option value="Kitchen Sinks">Kitchen Sinks</option>
+                <option value="Kitchen Utensils">Kitchen Utensils</option>
+                <option value="Lip">Lip</option>
+                <option value="Long Sleeves">Long Sleeves</option>
+                <option value="Mixing & Measuring Tools">Mixing & Measuring Tools</option>
+                <option value="Mountain">Mountain Bike</option>
+                <option value="Outdoor Cushions">Outdoor Cushions</option>
+                <option value="Outdoor Lighting">Outdoor Lighting</option>
+                <option value="Pain Relievers">Pain Relievers</option>
+                <option value="Patio Conversation Sets">Patio Conversation Sets</option>
+                <option value="Performance Nutrition">Performance Nutrition</option>
+                <option value="Pies">Pies</option>
+                <option value="Playstation">Playstation</option>
+                <option value="Pork">Pork</option>
+                <option value="Rolls & Buns">Rolls & Buns</option>
+                <option value="Samsung">Samsung Phone</option>
+                <option value="Seafood">Seafood</option>
+                <option value="Skirts">Skirts</option>
+                <option value="Sleep Support">Sleep Support</option>
+                <option value="Tennis">Tennis</option>
+                <option value="Tops">Tops</option>
+                <option value="T-Shirts">T-Shirts</option>
+                <option value="Wall Cabinets">Wall Cabinets</option>
+                <option value="Weight Loss">Weight Loss</option>
+                <option value="Wellness">Wellness</option>
+                <option value="Wireless Headphones">Wireless Headphones</option>
+                <option value="Yoga">Yoga</option>
+            </select>
+            <br>
+            <br>
+            <label for="auction_title"><b>Auction Title</b></label>
+                <input type="text" name="auction_title" required class="form-control" value = {{ title }}>
+            <br>
+            <label for="product_name"><b>Product Name</b></label>
+                <input type="text" name="product_name" required class="form-control" value = {{ name }}>
+            <br>
+            <label for="product_description"><b>Product Description</b></label>
+                <input type="text" name="product_description" required class="form-control" value = {{ description }}>
+            <br>
+            <label for="quantity"><b>Quantity</b></label>
+                <input type="text" name="quantity" required class="form-control" value = {{ quantity }}>
+            <br>
+            <label for="reserve_price"><b>Reserve Price</b></label>
+                <input type="text" name="reserve_price" required class="form-control" value = {{ reserve }}>
+            <br>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

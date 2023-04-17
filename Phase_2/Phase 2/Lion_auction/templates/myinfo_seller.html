@@ -1,16 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+    <style>
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: 2px solid black;
+            color: black;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 10px;
+                }
+        .button2 {background-color: #0A6EDE;} /* Blue */
+        .button3 {background-color: #A50E0E;} /* Red */
+        .button4 {background-color: #0EA545;} /* Green */
+        .button5 {background-color: #555555;} /* Black */
+
+        .button:hover {
+            background-color: #000000;
+            color: white;
+        }
+    </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title></title>
 </head>
-<h1>My Information</h1>
 <body>
+<div class="container-sm">
+    <div class="card-body">
+        <h2 class="card-title">Navigation</h2>
+        <a class="button button2" href="/myinformation" role="button">My Information</a>
+        <a class="button button4" href="/browse" role="button">Browse</a>
+        <a class="button button4" href="/my_bids" role="button">My Bids</a>
+        <a class="button button4" href="/my_listings" role="button">My Listings</a>
+        <a class="button button3" href="/" role="button">Logout</a>
+
+    </div>
+</div>
 
 <div class="form-group" style="border:solid; width: 400px; display: inline-block;">
     <div class="card-body" style = "display: inline-block;">

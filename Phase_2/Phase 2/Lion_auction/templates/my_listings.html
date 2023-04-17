@@ -49,7 +49,17 @@
             <label for="ProductID"><b>Product ID</b></label>
             <form id = 'formset' action="/remove_listing" method="POST">
                 <input type="text" name="id" required class="form-control">
+                <br>
+                <label for="reason"><b>Reason for Removal</b></label>
+                <input type="text" name="reason" required class="form-control">
                 <button class="button button3" type="submit" role="button">Remove Listing</button>
+                <br>
+            </form>
+            <br>
+            <form id = 'formset' action="/update_listing" method="POST">
+                <label for="ProductID"><b>Product ID</b></label>
+                <input type="text" name="id" required class="form-control">
+                <button class="button button5" type="submit" role="button">Update Listing</button>
             </form>
         </div>
 </div>
@@ -59,6 +69,7 @@
         <table class="table table-dark clickable-row">
             <tr>
                 <th scope="col"> ID</th>
+                <th scope="col"> Category</th>
                 <th scope="col"> Title</th>
                 <th scope="col"> Product Name</th>
                 <th scope="col"> Description</th>
@@ -71,6 +82,7 @@
             {% for email, id, category, title, product_name, description, quantity, price, bids, status in result %}
                 <tr>
                     <td> {{ id }} </td>
+                    <td> {{ category }} </td>
                     <td> {{ title }} </td>
                     <td> {{ product_name }} </td>
                     <td> {{ description }} </td>

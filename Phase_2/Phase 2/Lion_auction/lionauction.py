@@ -325,7 +325,36 @@ def remove_listing():
     if request.method == 'POST':
         email = request.cookies.get('email')
         listing_id = request.form["id"]
-        delete_listings(listing_id, email)
+        reason = request.form['reason']
+        delete_listings(listing_id, email, reason)
+        return redirect(url_for('my_listings'))
+
+@app.route('/update_listing', methods=['POST', 'GET'])
+def update_listing():
+    if request.method == 'POST':
+        email = request.cookies.get('email')
+        listing_id = request.form["id"]
+        result = get_listing(listing_id, email)
+        category = result[0][2]
+        title = result[0][3]
+        name = result[0][4]
+        description = result[0][5]
+        quantity = result[0][6]
+        reserve = result[0][7]
+        return render_template('update.html', category=category, title=title, name=name, description=description, quantity=quantity, reserve=reserve, id=listing_id)
+
+@app.route('/updater', methods=['POST', 'GET'])
+def updater():
+    if request.method == 'POST':
+        email = request.cookies.get('email')
+        id_value = request.form['id']
+        category = request.form['category']
+        title = request.form['auction_title']
+        description = request.form['product_description']
+        name = request.form['product_name']
+        quantity = request.form['quantity']
+        reserve_price = request.form['reserve_price']
+        update(id_value, email, category, title, name, description, quantity, reserve_price)
         return redirect(url_for('my_listings'))
 
 @app.route('/generate_listing', methods=['POST', 'GET'])
@@ -348,6 +377,11 @@ def generate_listing():
 
         return redirect(url_for('my_listings'))
 
+def get_listing(id,email):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Listing_ID = ? AND Seller_Email = ?;', (id,email))
+    return cursor.fetchall()
+
 def get_max_id():
     connection = sql.connect('user.sqlite')
     temp = connection.execute('SELECT MAX(Listing_ID) FROM Auction_Listings_new;')
@@ -360,9 +394,19 @@ def get_max_bids(id):
     max_id = temp.fetchone()[0] + 1
     return max_id
 
-def delete_listings(id,email):
+def delete_listings(id,email,reason):
     connection = sql.connect('user.sqlite')
-    connection.execute('DELETE FROM Auction_Listings_new WHERE Listing_ID = ? AND Seller_Email = ?;', (id, email))
+    connection.execute('UPDATE Auction_Listings_new SET Auction_Title = ?, Product_Description = ?, Status = 0 WHERE Listing_ID = ? AND Seller_Email = ?',
+                       ("Removed", reason, id, email))
+    #connection.execute('DELETE FROM Auction_Listings_new WHERE Listing_ID = ? AND Seller_Email = ?;', (id, email))
+    connection.commit()
+    return True
+
+def update(id,email,category, title, name, desc, quantity, price):
+    connection = sql.connect('user.sqlite')
+    connection.execute('UPDATE Auction_Listings_new SET Category = ?, Auction_Title = ?, Product_Name = ?, Product_Description = ?, Quantity = ?, Reserve_price = ? '
+                       'WHERE Listing_ID = ? AND Seller_Email = ?',
+                       (category, title, name, desc, quantity, price, id, email))
     connection.commit()
     return True
 
