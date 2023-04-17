@@ -9,7 +9,7 @@ host = 'http://127.0.0.1:5000/'
 @app.route('/')
 # Set default display of webpage to portal.html
 def index():
-    return render_template('browse.html')
+    return render_template('portal.html')
 
 @app.route('/go_back')
 def go_back():
@@ -297,11 +297,6 @@ def toys():
 def videogames():
     return render_template('videogames.html')
 
-
-
-
-
-
 #Routed Output Page
 @app.route('/filter_output', methods=['POST', 'GET'])
 def filter_output():
@@ -312,6 +307,69 @@ def filter_output():
 @app.route('/bid', methods=['POST', 'GET'])
 def bid():
     return render_template('bid.html')
+
+#seller listing pages
+@app.route('/my_listings', methods=['POST', 'GET'])
+def my_listings():
+    email = request.cookies.get('email')
+    listings = populate_listings(email)
+    return render_template('my_listings.html', result=listings)
+
+@app.route('/create_listing', methods=['POST', 'GET'])
+def create_listing():
+    email = request.cookies.get('email')
+    return render_template('create_listing.html', email=email)
+
+@app.route('/remove_listing', methods=['POST', 'GET'])
+def remove_listing():
+    if request.method == 'POST':
+        email = request.cookies.get('email')
+        listing_id = request.form["id"]
+        delete_listings(listing_id, email)
+        return redirect(url_for('my_listings'))
+
+@app.route('/generate_listing', methods=['POST', 'GET'])
+def generate_listing():
+    if request.method == 'POST':
+        email = request.cookies.get('email')
+        id = get_max_id()
+        category = request.form['category']
+        title = request.form['auction_title']
+        description = request.form['product_description']
+        name = request.form['product_name']
+        quantity = request.form['quantity']
+        reserve_price = request.form['reserve_price']
+        max_bids = 0
+        status = 0
+        connection = sql.connect('user.sqlite')
+        connection.execute('INSERT INTO Auction_Listings_new (Seller_Email, Listing_ID, Category, Auction_Title, Product_Name, Product_Description, Quantity, Reserve_Price, Max_bids, Status) VALUES (?,?,?,?,?,?,?,?,?,?);',
+                           (email, id, category, title, name, description, quantity, reserve_price, max_bids, status))
+        connection.commit()
+
+        return redirect(url_for('my_listings'))
+
+def get_max_id():
+    connection = sql.connect('user.sqlite')
+    temp = connection.execute('SELECT MAX(Listing_ID) FROM Auction_Listings_new;')
+    max_id = temp.fetchone()[0] + 1
+    return max_id
+
+def get_max_bids(id):
+    connection = sql.connect('user.sqlite')
+    temp = connection.execute('SELECT MAX(Listing_ID) FROM Auction_Listings_new;')
+    max_id = temp.fetchone()[0] + 1
+    return max_id
+
+def delete_listings(id,email):
+    connection = sql.connect('user.sqlite')
+    connection.execute('DELETE FROM Auction_Listings_new WHERE Listing_ID = ? AND Seller_Email = ?;', (id, email))
+    connection.commit()
+    return True
+
+def populate_listings(email):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Seller_Email = ? ORDER BY Reserve_Price ASC;',(email,))
+    return cursor.fetchall()
 
 def valid_login(Email, Password, pid=1):
     encoded_password = Password.encode('utf-8')
