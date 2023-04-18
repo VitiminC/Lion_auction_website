@@ -18,7 +18,7 @@
         .button2 {background-color: #0A6EDE;} /* Blue */
         .button3 {background-color: #A50E0E;} /* Red */
         .button4 {background-color: #0EA545;} /* Green */
-        .button5 {background-color: #555555;} /* Black */
+        .button5 {background-color: #FFA200;} /* Black */
 
         .button:hover {
             background-color: #000000;
@@ -132,7 +132,8 @@
             <label for="reserve_price"><b>Reserve Price</b></label>
                 <input type="text" name="reserve_price" required class="form-control" value = {{ reserve }}>
             <br>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="button button5">Update</button>
+            <input class="button button3" value="Go back!" onclick="history.back()">
         </form>
     </div>
 </div>

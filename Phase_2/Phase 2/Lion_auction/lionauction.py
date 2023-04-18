@@ -335,13 +335,17 @@ def update_listing():
         email = request.cookies.get('email')
         listing_id = request.form["id"]
         result = get_listing(listing_id, email)
-        category = result[0][2]
-        title = result[0][3]
-        name = result[0][4]
-        description = result[0][5]
-        quantity = result[0][6]
-        reserve = result[0][7]
-        return render_template('update.html', category=category, title=title, name=name, description=description, quantity=quantity, reserve=reserve, id=listing_id)
+        status = result[0][9]
+        if status == 0:
+            return render_template('error_completed.html')
+        else:
+            category = result[0][2]
+            title = result[0][3]
+            name = result[0][4]
+            description = result[0][5]
+            quantity = result[0][6]
+            reserve = result[0][7]
+            return render_template('update.html', category=category, title=title, name=name, description=description, quantity=quantity, reserve=reserve, id=listing_id)
 
 @app.route('/updater', methods=['POST', 'GET'])
 def updater():
@@ -369,7 +373,7 @@ def generate_listing():
         quantity = request.form['quantity']
         reserve_price = request.form['reserve_price']
         max_bids = 0
-        status = 0
+        status = 1
         connection = sql.connect('user.sqlite')
         connection.execute('INSERT INTO Auction_Listings_new (Seller_Email, Listing_ID, Category, Auction_Title, Product_Name, Product_Description, Quantity, Reserve_Price, Max_bids, Status) VALUES (?,?,?,?,?,?,?,?,?,?);',
                            (email, id, category, title, name, description, quantity, reserve_price, max_bids, status))
@@ -379,7 +383,7 @@ def generate_listing():
 
 def get_listing(id,email):
     connection = sql.connect('user.sqlite')
-    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Listing_ID = ? AND Seller_Email = ?;', (id,email))
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Listing_ID = ? AND Seller_Email = ? ORDER BY Status;', (id,email))
     return cursor.fetchall()
 
 def get_max_id():
@@ -412,7 +416,7 @@ def update(id,email,category, title, name, desc, quantity, price):
 
 def populate_listings(email):
     connection = sql.connect('user.sqlite')
-    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Seller_Email = ? ORDER BY Reserve_Price ASC;',(email,))
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Seller_Email = ? ORDER BY Status;', (email,))
     return cursor.fetchall()
 
 def valid_login(Email, Password, pid=1):
