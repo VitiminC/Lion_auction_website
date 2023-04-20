@@ -42,19 +42,36 @@
         <a class="button button3" href="/" role="button">Logout</a>
     </div>
         <div class="card-body" style = "display: inline-block;">
-        <label for="ProductID"><b>Product ID: {{ id }}</b></label>
-            <form id = 'formset' action="/place_bid" method="POST">
-                <label for="highest_bid"><b>Current Highest Bid: {{ max_bid }}</b></label>
+            <form id = 'formset' action="/submit_payment" method="POST">
+                <label for="ProductID"><b>Card Num (****-****-****-****)</b></label> <input type="text" name="card_num" required class="form-control">
                 <br>
-                <label for="bid_limit"><b>Max Number of Bids: {{ bid_limit }}</b></label>
+                <label for="type"><b>Card Type</b></label>
+                  <select name="card_type" id="card_type">
+                    <option value="Master ">Master</option>
+                    <option value="Discover">Discover</option>
+                      <option value="Visa">Visa</option>
+                      <option value="American Express">American Express</option>
+                  </select>
                 <br>
-                <label for="cur_limit"><b>Current Number of Bids: {{ num_bids }}</b></label>
+                <label for="type"><b>Exp Month</b></label>
+                  <select name="month" id="month">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                  </select>
                 <br>
-                <label for="label"><b>All new bids must be at least $1 higher than previous bid</b></label>
-                <br>
-                <label for="label"><b>Your Bid:</b></label>
-                <input type="text" name="bid" required class="form-control" value = {{ min_bid }}>
-                <button class="button button4" type="submit" role="button" name="x" value = "x">Confirm Bid</button>
+                <label for="ProductID"><b>Exp Year (****)</b></label> <input type="text" name="exp_year" required class="form-control">
+                <label for="ProductID"><b>Security Code (***)</b></label> <input type="text" name="sec_code" required class="form-control">
+                <button class="button button4" type="submit" role="button" name="x" value = "x">Confirm Payment</button>
             </form>
             <input class="button button3" value="Go back!" onclick="history.back()">
         </div>

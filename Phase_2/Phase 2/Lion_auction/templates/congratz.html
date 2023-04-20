@@ -18,7 +18,7 @@
         .button2 {background-color: #0A6EDE;} /* Blue */
         .button3 {background-color: #A50E0E;} /* Red */
         .button4 {background-color: #0EA545;} /* Green */
-        .button5 {background-color: #FFA200;} /* Black */
+        .button5 {background-color: #555555;} /* Black */
 
         .button:hover {
             background-color: #000000;
@@ -30,8 +30,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title></title>
+<head>
+    <meta charset="UTF-8">
+    <title>Portal</title>
 </head>
-<body>
+
+<body class = 'container-sm'>
 <div class="container-sm">
     <div class="card-body">
         <h2 class="card-title">Navigation</h2>
@@ -41,23 +45,8 @@
         <a class="button button4" href="/my_listings" role="button">My Listings</a>
         <a class="button button3" href="/" role="button">Logout</a>
     </div>
-        <div class="card-body" style = "display: inline-block;">
-        <label for="ProductID"><b>Product ID: {{ id }}</b></label>
-            <form id = 'formset' action="/place_bid" method="POST">
-                <label for="highest_bid"><b>Current Highest Bid: {{ max_bid }}</b></label>
-                <br>
-                <label for="bid_limit"><b>Max Number of Bids: {{ bid_limit }}</b></label>
-                <br>
-                <label for="cur_limit"><b>Current Number of Bids: {{ num_bids }}</b></label>
-                <br>
-                <label for="label"><b>All new bids must be at least $1 higher than previous bid</b></label>
-                <br>
-                <label for="label"><b>Your Bid:</b></label>
-                <input type="text" name="bid" required class="form-control" value = {{ min_bid }}>
-                <button class="button button4" type="submit" role="button" name="x" value = "x">Confirm Bid</button>
-            </form>
-            <input class="button button3" value="Go back!" onclick="history.back()">
-        </div>
 </div>
+<h1>Bidding Concluded for Item: {{ item }}</h1>
+<h2>{{ email }} Has Won the Bid!</h2>
 </body>
 </html>

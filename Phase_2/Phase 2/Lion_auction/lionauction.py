@@ -306,7 +306,135 @@ def filter_output():
         return render_template('filter_output.html', result=result)
 @app.route('/bid', methods=['POST', 'GET'])
 def bid():
-    return render_template('bid.html')
+    if request.method == 'POST' and request.form["bid"] == "bid":
+        list_id = request.form['id']
+        return render_template('bid.html', id=list_id)
+
+@app.route('/place_bid', methods=['POST', 'GET'])
+def place_bid():
+    if request.method == 'POST' and request.form["bid"] == "bid":
+        list_id = request.form['id']
+        max_bid = get_max_bid(list_id)
+        if type(max_bid) == int:
+            min_bid = max_bid+1
+        else:
+            min_bid = 0
+        bid_id = get_new_bid_id()
+        seller_email = get_seller_email(list_id)
+        bidder_email = request.cookies.get('email')
+        num_bids = get_num_bids(list_id)
+        bid_limit = get_bid_limit(list_id)
+        bid_list = [str(bid_id), seller_email, str(list_id), bidder_email, str(num_bids), str(bid_limit)]
+        bid_string = ','.join(bid_list)
+        resp = make_response(render_template('bid.html',
+                                             id=list_id, max_bid=max_bid, min_bid=min_bid, num_bids=num_bids, bid_limit=bid_limit))
+        resp.set_cookie('bidding', bid_string)
+        if num_bids == bid_limit:
+            render_template('product_already_sold.html')
+        else:
+            return resp
+    if request.method == 'POST' and request.form["x"] == "x":
+        price = request.form['bid']
+        bid_string = request.cookies.get('bidding')
+        bid_list = bid_string.split(',')
+        try:
+            bidder_email = request.cookies.get('email')
+            prev_email = get_prev_bidder(int(bid_list[2]))
+            print(bidder_email)
+            print(prev_email)
+            if bidder_email == prev_email:
+                return render_template('failed_bid.html')
+        except:
+            pass
+        prev_max_bid = get_max_bid(int(bid_list[2]))
+        if type(prev_max_bid) != int:
+            prev_max_bid = 0
+        if int(price) > prev_max_bid:
+            resp = make_response(render_template('enter_payment.html'))
+            resp.set_cookie('my_price', price)
+            return resp
+        else:
+            return render_template('failed_price.html')
+
+def get_prev_bidder(ide):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT Bidder_Email FROM Bids WHERE Bid_Price = (SELECT MAX(Bid_Price) FROM Bids WHERE Listing_ID = ?);', (ide,))
+    return cursor.fetchone()[0]
+
+@app.route('/submit_payment', methods=['POST', 'GET'])
+def submit_payment():
+    if request.method == 'POST' and request.form["x"] == "x":
+        email = request.cookies.get('email')
+        card_type = request.form['card_type']
+        exp_month = request.form['month']
+        card_num = request.form['card_num']
+        exp_year = request.form['exp_year']
+        sec_code = request.form['sec_code']
+        input_card = (card_num, card_type, int(exp_month), int(exp_year), int(sec_code), email)
+        card = get_card_info(email)
+        if card == input_card:
+            price = request.cookies.get('my_price')
+            bid_string = request.cookies.get('bidding')
+            bid_list = bid_string.split(',')
+            add_bid(int(bid_list[0]), bid_list[1], int(bid_list[2]), bid_list[3], int(price))
+            bid_num = int(bid_list[4])
+            bid_limit = int(bid_list[5])
+            if (bid_num+1) == bid_limit:
+                update_status(int(bid_list[2]))
+                return render_template('congratz.html', email=email, item=bid_list[2])
+            else:
+                return redirect(url_for('my_bids'))
+        else:
+            return render_template('failed_card.html')
+def update_status(id_listing):
+    connection = sql.connect('user.sqlite')
+    connection.execute('UPDATE Auction_Listings_new SET Status = ? WHERE Listing_ID = ?;',
+                       (2, id_listing))
+    connection.commit()
+    return True
+@app.route('/my_bids', methods=['POST', 'GET'])
+def my_bids():
+    email = request.cookies.get('email')
+    result = get_bids(email)
+    print(result)
+    return render_template('my_bids.html', result=result)
+def get_bids(email):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Bids WHERE Bidder_Email = ?;', (email,))
+    return cursor.fetchall()
+def get_card_info(email):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Credit_Cards WHERE Owner_Email = ?;', (email,))
+    return cursor.fetchall()[0]
+def add_bid(bid_id, seller_email, listing_id, bidder_email, bid_price):
+    connection = sql.connect('user.sqlite')
+    connection.execute('INSERT INTO Bids (Bid_ID, Seller_Email, Listing_ID, Bidder_Email, Bid_Price) VALUES (?,?,?,?,?);',
+                       (bid_id, seller_email, listing_id, bidder_email, bid_price))
+    connection.commit()
+    return True
+
+def get_seller_email(id):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT Seller_Email FROM Auction_Listings_new WHERE Listing_ID=?;', (id,))
+    return cursor.fetchone()[0]
+def get_new_bid_id():
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT MAX(Bid_ID) FROM Bids;')
+    max_id = cursor.fetchone()[0] + 1
+    return max_id
+def get_max_bid(id):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT MAX(Bid_Price) FROM Bids WHERE Listing_ID = ?;', (id,))
+    return cursor.fetchone()[0]
+def get_num_bids(id):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT COUNT(*) FROM Bids WHERE Listing_ID = ?;', (id,))
+    return cursor.fetchone()[0]
+def get_bid_limit(id):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT Max_bids FROM Auction_listings_new WHERE Listing_ID = ?;', (id,))
+    return cursor.fetchone()[0]
+
 
 #seller listing pages
 @app.route('/my_listings', methods=['POST', 'GET'])
@@ -429,7 +557,7 @@ def valid_login(Email, Password, pid=1):
 
 def populate(category):
     connection = sql.connect('user.sqlite')
-    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Category = ? ORDER BY Reserve_Price ASC;',(category,))
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',(category,))
     return cursor.fetchall()
 
 def is_bidder(email):

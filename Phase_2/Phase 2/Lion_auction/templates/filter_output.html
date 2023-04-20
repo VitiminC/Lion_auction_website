@@ -43,13 +43,13 @@
     </div>
         <div class="card-body" style = "display: inline-block;">
         <label for="ProductID"><b>Product ID</b></label>
-            <form id = 'formset' action="/bid" method="POST">
+            <form id = 'formset' action="/place_bid" method="POST">
                 <input type="text" name="id" required class="form-control">
-                <button class="button button4" type="submit" role="button">Place a Bid</button>
+                <button class="button button4" type="submit" role="button" name="bid" value = "bid">Place a Bid</button>
             </form>
             <input class="button button3" value="Go back!" onclick="history.back()">
         </div>
-    </div>
+</div>
 <div class="container-sm">
     <div class="card-body">
         <h2 class="card-title">Product List</h2>

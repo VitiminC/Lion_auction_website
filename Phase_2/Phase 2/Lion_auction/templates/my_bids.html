@@ -42,22 +42,45 @@
         <a class="button button3" href="/" role="button">Logout</a>
     </div>
         <div class="card-body" style = "display: inline-block;">
-        <label for="ProductID"><b>Product ID: {{ id }}</b></label>
-            <form id = 'formset' action="/place_bid" method="POST">
-                <label for="highest_bid"><b>Current Highest Bid: {{ max_bid }}</b></label>
-                <br>
-                <label for="bid_limit"><b>Max Number of Bids: {{ bid_limit }}</b></label>
-                <br>
-                <label for="cur_limit"><b>Current Number of Bids: {{ num_bids }}</b></label>
-                <br>
-                <label for="label"><b>All new bids must be at least $1 higher than previous bid</b></label>
-                <br>
-                <label for="label"><b>Your Bid:</b></label>
-                <input type="text" name="bid" required class="form-control" value = {{ min_bid }}>
-                <button class="button button4" type="submit" role="button" name="x" value = "x">Confirm Bid</button>
+        <label for="ProductID"><b>Product ID</b></label>
+            <form id = 'formset' action="/my_bids" method="POST">
+                <input type="text" name="id" required class="form-control">
+                <button class="button button4" type="submit" role="button" name="bid" value = "bid">Remove Bid</button>
             </form>
             <input class="button button3" value="Go back!" onclick="history.back()">
         </div>
 </div>
+<div class="container-sm">
+    <div class="card-body">
+        <h2 class="card-title">Bid List</h2>
+        <table class="table table-dark clickable-row">
+            <tr>
+                <th scope="col"> Bid ID</th>
+                <th scope="col"> Seller Email</th>
+                <th scope="col"> Listing ID</th>
+                <th scope="col"> Bid Price</th>
+            </tr>
+            <tbody>
+            {% for id, seller, listing, bidder, price in result %}
+                <tr>
+                    <td> {{ id }} </td>
+                    <td> {{ seller }} </td>
+                    <td> {{ listing }} </td>
+                    <td> {{ price }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
 </body>
 </html>
