@@ -2,6 +2,7 @@ from flask import Flask, redirect, url_for, request, make_response
 from flask import render_template
 import sqlite3 as sql
 import hashlib
+import re
 
 app = Flask(__name__)
 host = 'http://127.0.0.1:5000/'
@@ -173,7 +174,20 @@ def myinformation():
 
 @app.route('/browse', methods=['POST', 'GET'])
 def browse():
-    return render_template('browse.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Status == 1 ORDER BY Reserve_Price ASC;')
+    result = cursor.fetchall()
+    return render_template('browse.html', result=result)
+
+@app.route('/search', methods=['POST', 'GET'])
+def search():
+    name = request.form['name']
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Auction_Title = ? AND Status == 1 ORDER BY Reserve_Price ASC;', (name,))
+    result = cursor.fetchall()
+    return render_template('filter_output.html', result=result)
 
 #Beauty Products Section
 @app.route('/BeautyProducts', methods=['POST', 'GET'])
@@ -483,16 +497,18 @@ def place_bid():
     if request.method == 'POST' and request.form["bid"] == "bid":
         list_id = request.form['id']
         max_bid = get_max_bid(list_id)
+        reserve = get_reserve_price(list_id).strip('$')
+        reserve_sub = re.sub(",", "", reserve)
         if type(max_bid) == int:
             min_bid = max_bid+1
         else:
-            min_bid = 0
+            min_bid = int(reserve_sub) + 1
         bid_id = get_new_bid_id()
         seller_email = get_seller_email(list_id)
         bidder_email = request.cookies.get('email')
         num_bids = get_num_bids(list_id)
         bid_limit = get_bid_limit(list_id)
-        bid_list = [str(bid_id), seller_email, str(list_id), bidder_email, str(num_bids), str(bid_limit)]
+        bid_list = [str(bid_id), seller_email, str(list_id), bidder_email, str(num_bids), str(bid_limit), str(reserve_sub)]
         bid_string = ','.join(bid_list)
         resp = make_response(render_template('bid.html',
                                              id=list_id, max_bid=max_bid, min_bid=min_bid, num_bids=num_bids, bid_limit=bid_limit))
@@ -516,7 +532,7 @@ def place_bid():
             pass
         prev_max_bid = get_max_bid(int(bid_list[2]))
         if type(prev_max_bid) != int:
-            prev_max_bid = 0
+            prev_max_bid = int(bid_list[6])
         if int(price) > prev_max_bid:
             resp = make_response(render_template('enter_payment.html'))
             resp.set_cookie('my_price', price)
@@ -524,6 +540,10 @@ def place_bid():
         else:
             return render_template('failed_price.html')
 
+def get_reserve_price(lid):
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT Reserve_Price FROM Auction_Listings_new WHERE Listing_ID = ?;', (lid,))
+    return cursor.fetchone()[0]
 def get_prev_bidder(ide):
     connection = sql.connect('user.sqlite')
     cursor = connection.execute('SELECT Bidder_Email FROM Bids WHERE Bid_Price = (SELECT MAX(Bid_Price) FROM Bids WHERE Listing_ID = ?);', (ide,))
