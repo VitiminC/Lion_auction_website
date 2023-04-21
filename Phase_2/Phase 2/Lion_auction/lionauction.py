@@ -9,7 +9,7 @@ host = 'http://127.0.0.1:5000/'
 @app.route('/')
 # Set default display of webpage to portal.html
 def index():
-    return render_template('portal.html')
+    return render_template('browse.html')
 
 @app.route('/go_back')
 def go_back():
@@ -178,124 +178,292 @@ def browse():
 #Beauty Products Section
 @app.route('/BeautyProducts', methods=['POST', 'GET'])
 def BeautyProducts():
-    return render_template('BeautyProducts.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Face", "Lip", "Brushes & Applicators"))
+    result = cursor.fetchall()
+    return render_template('BeautyProducts.html', result=result)
 @app.route('/Makeup', methods=['POST', 'GET'])
 def Makeup():
-    return render_template('Makeup.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Face", "Lip", "Brushes & Applicators"))
+    result = cursor.fetchall()
+    return render_template('Makeup.html', result=result)
 
 #Clothing Section
 @app.route('/Clothing', methods=['POST', 'GET'])
 def clothing():
-    return render_template('clothing.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Jeans", "Pants", "Skirts", "Bodysuits", "T-Shirts", "Long Sleeves", "Bath Robes"))
+    result = cursor.fetchall()
+    return render_template('clothing.html', result=result)
 @app.route('/bottoms', methods=['POST', 'GET'])
 def bottoms():
-    return render_template('bottoms.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Jeans", "Pants", "Skirts"))
+    result = cursor.fetchall()
+    return render_template('bottoms.html', result=result)
 @app.route('/tops', methods=['POST', 'GET'])
 def tops():
-    return render_template('tops.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Bodysuits", "T-Shirts", "Long Sleeves"))
+    result = cursor.fetchall()
+    return render_template('tops.html', result=result)
 @app.route('/sleepwear', methods=['POST', 'GET'])
 def sleepwear():
-    return render_template('sleepwear.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Bath Robes",))
+    result = cursor.fetchall()
+    return render_template('sleepwear.html', result=result)
 
 #Electrical
 @app.route('/ElectricalSupplies', methods=['POST', 'GET'])
 def ElectricalSupplies():
-    return render_template('electricalsupplies.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("IPhone", "Samsung", "55-Inch Tvs", "65-Inch Tvs", "75-Inch Tvs", "Apple Watch", "Headphones", "Wireless Headphones"))
+    result = cursor.fetchall()
+    return render_template('electricalsupplies.html', result=result)
 @app.route('/cellphones', methods=['POST', 'GET'])
 def cellphones():
-    return render_template('cellphones.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("IPhone", "Samsung"))
+    result = cursor.fetchall()
+    return render_template('cellphones.html', result=result)
 @app.route('/tv', methods=['POST', 'GET'])
 def tv():
-    return render_template('tv.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("55-Inch Tvs", "65-Inch Tvs", "75-Inch Tvs"))
+    result = cursor.fetchall()
+    return render_template('tv.html', result=result)
 @app.route('/wearable', methods=['POST', 'GET'])
 def wearable():
-    return render_template('wearable.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Apple Watch", "Headphones", "Wireless Headphones"))
+    result = cursor.fetchall()
+    return render_template('wearable.html', result=result)
 
 #Grocery
 @app.route('/grocery', methods=['POST', 'GET'])
 def grocery():
-    return render_template('grocery.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Cookies & Brownies", "Pies", "Rolls & Buns", "Beef & Lamb", "Pork", "Seafood"))
+    result = cursor.fetchall()
+    return render_template('grocery.html', result=result)
 @app.route('/bakery', methods=['POST', 'GET'])
 def bakery():
-    return render_template('bakery.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Cookies & Brownies", "Pies", "Rolls & Buns"))
+    result = cursor.fetchall()
+    return render_template('bakery.html', result=result)
 @app.route('/meat', methods=['POST', 'GET'])
 def meat():
-    return render_template('meat.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Beef & Lamb", "Pork", "Seafood"))
+    result = cursor.fetchall()
+    return render_template('meat.html', result=result)
 
 #health
 @app.route('/PharmacyHealthWellness', methods=['POST', 'GET'])
 def PharmacyHealthWellness():
-    return render_template('PharmacyHealthWellness.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Cough, Cold & Flu", "Eye Care", "Pain Relievers", "Performance Nutrition", "Sleep Support", "Weight Loss"))
+    result = cursor.fetchall()
+    return render_template('PharmacyHealthWellness.html', result=result)
 @app.route('/healthcare', methods=['POST', 'GET'])
 def healthcare():
-    return render_template('healthcare.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Cough, Cold & Flu", "Eye Care", "Pain Relievers"))
+    result = cursor.fetchall()
+    return render_template('healthcare.html', result=result)
 @app.route('/wellness', methods=['POST', 'GET'])
 def wellness():
-    return render_template('wellness.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Performance Nutrition", "Sleep Support", "Weight Loss"))
+    result = cursor.fetchall()
+    return render_template('wellness.html', result=result)
 
 #kitchen
 @app.route('/Kitchen', methods=['POST', 'GET'])
 def Kitchen():
-    return render_template('Kitchen.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Cooking Accessories", "Kitchen Utensils", "Mixing & Measuring Tools", "Base Cabinets", "High Cabinets", "Wall Cabinets", "Kitchen Faucets", "Kitchen Sinks"))
+    result = cursor.fetchall()
+    return render_template('Kitchen.html', result=result)
 @app.route('/cooking', methods=['POST', 'GET'])
 def cooking():
-    return render_template('cooking.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Cooking Accessories", "Kitchen Utensils", "Mixing & Measuring Tools"))
+    result = cursor.fetchall()
+    return render_template('cooking.html', result=result)
 @app.route('/cabinets', methods=['POST', 'GET'])
 def cabinets():
-    return render_template('cabinets.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Base Cabinets", "High Cabinets", "Wall Cabinets"))
+    result = cursor.fetchall()
+    return render_template('cabinets.html', result=result)
 @app.route('/sinks', methods=['POST', 'GET'])
 def sinks():
-    return render_template('sinks.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Kitchen Faucets", "Kitchen Sinks"))
+    result = cursor.fetchall()
+    return render_template('sinks.html', result=result)
 
 #outdoor
 @app.route('/OutdoorDecor', methods=['POST', 'GET'])
 def OutdoorDecor():
-    return render_template('OutdoorDecor.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Outdoor Cushions", "Outdoor Lighting", "Indoor & Live Plants", "Patio Furniture", "Patio Conversation Sets", "Patio Dining Sets", "Porch Swings"))
+    result = cursor.fetchall()
+    return render_template('OutdoorDecor.html', result=result)
 @app.route('/lighting', methods=['POST', 'GET'])
 def lighting():
-    return render_template('lighting.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Outdoor Lighting",))
+    result = cursor.fetchall()
+    return render_template('lighting.html', result=result)
 @app.route('/furniture', methods=['POST', 'GET'])
 def furniture():
-    return render_template('furniture.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Patio Furniture", "Patio Conversation Sets", "Patio Dining Sets", "Porch Swings"))
+    result = cursor.fetchall()
+    return render_template('furniture.html', result=result)
 @app.route('/cushions', methods=['POST', 'GET'])
 def cushions():
-    return render_template('cushions.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Outdoor Cushions",))
+    result = cursor.fetchall()
+    return render_template('cushions.html', result=result)
 
 #pets
 @app.route('/Pets', methods=['POST', 'GET'])
 def Pets():
-    return render_template('Pets.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Cat Dry Food", "Cat Wet Food", "Climbing Trees", "Dog Beds", "Dog Dry Food", "Dog Wet Food"))
+    result = cursor.fetchall()
+    return render_template('Pets.html', result=result)
 @app.route('/cats', methods=['POST', 'GET'])
 def cats():
-    return render_template('cats.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Cat Dry Food", "Cat Wet Food", "Climbing Trees"))
+    result = cursor.fetchall()
+    return render_template('cats.html', result=result)
 @app.route('/dogs', methods=['POST', 'GET'])
 def dogs():
-    return render_template('dogs.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Dog Beds", "Dog Dry Food", "Dog Wet Food"))
+    result = cursor.fetchall()
+    return render_template('dogs.html', result=result)
 
 #sports
 @app.route('/SportsOutdoors', methods=['POST', 'GET'])
 def SportsOutdoors():
-    return render_template('SportsOutdoors.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Electric", "Mountain", "Boxing & Mma", "Exercise Machines", "Yoga", "Baseball", "Basketball", "Tennis"))
+    result = cursor.fetchall()
+    return render_template('SportsOutdoors.html', result=result)
 @app.route('/exercise', methods=['POST', 'GET'])
 def exercise():
-    return render_template('exercise.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Boxing & Mma", "Exercise Machines", "Yoga"))
+    result = cursor.fetchall()
+    return render_template('exercise.html', result=result)
 @app.route('/sports', methods=['POST', 'GET'])
 def sports():
-    return render_template('sports.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Baseball", "Basketball", "Tennis"))
+    result = cursor.fetchall()
+    return render_template('sports.html', result=result)
 @app.route('/bikes', methods=['POST', 'GET'])
 def bikes():
-    return render_template('bikes.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Electric", "Mountain"))
+    result = cursor.fetchall()
+    return render_template('bikes.html', result=result)
 
 #toys
 @app.route('/ToysVideoGames', methods=['POST', 'GET'])
 def ToysVideoGames():
-    return render_template('ToysVideoGames.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? OR Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Kidkraft Bancroft Wooden Playhouse", "Playstation"))
+    result = cursor.fetchall()
+    return render_template('ToysVideoGames.html', result=result)
 @app.route('/toys', methods=['POST', 'GET'])
 def toys():
-    return render_template('toys.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Kidkraft Bancroft Wooden Playhouse",))
+    result = cursor.fetchall()
+    return render_template('toys.html', result=result)
 @app.route('/videogames', methods=['POST', 'GET'])
 def videogames():
-    return render_template('videogames.html')
+    connection = sql.connect('user.sqlite')
+    cursor = connection.execute('SELECT * FROM Auction_Listings_new '
+                                'WHERE Category = ? AND Status == 1 ORDER BY Reserve_Price ASC;',
+                                ("Playstation",))
+    result = cursor.fetchall()
+    return render_template('videogames.html', result=result)
 
 #Routed Output Page
 @app.route('/filter_output', methods=['POST', 'GET'])
