@@ -9,7 +9,7 @@ host = 'http://127.0.0.1:5000/'
 @app.route('/')
 # Set default display of webpage to portal.html
 def index():
-    return render_template('browse.html')
+    return render_template('portal.html')
 
 @app.route('/go_back')
 def go_back():
@@ -614,7 +614,10 @@ def my_listings():
 @app.route('/create_listing', methods=['POST', 'GET'])
 def create_listing():
     email = request.cookies.get('email')
-    return render_template('create_listing.html', email=email)
+    if is_seller(email) == 1:
+        return render_template('create_listing.html', email=email)
+    else:
+        return render_template('notseller.html', email=email)
 
 @app.route('/remove_listing', methods=['POST', 'GET'])
 def remove_listing():
