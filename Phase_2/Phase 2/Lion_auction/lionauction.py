@@ -185,7 +185,7 @@ def search():
     name = request.form['name']
     connection = sql.connect('user.sqlite')
     cursor = connection.execute('SELECT * FROM Auction_Listings_new '
-                                'WHERE Auction_Title = ? AND Status == 1 ORDER BY Reserve_Price ASC;', (name,))
+                                'WHERE Auction_Title LIKE ? OR Category LIKE ? OR Product_Name LIKE ? AND Status == 1 ORDER BY Reserve_Price ASC;', ('%' + name + '%', '%' + name + '%', '%' + name + '%'))
     result = cursor.fetchall()
     return render_template('filter_output.html', result=result)
 
