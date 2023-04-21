@@ -172,6 +172,23 @@ def myinformation():
     else:
         return render_template('myinfo.html', email_address=email)
 
+@app.route('/update_info', methods=['POST', 'GET'])
+def update_info():
+    if request.method == 'POST':
+        email = request.cookies.get('email')
+        fname = request.form["first_name"]
+        lname = request.form["last_name"]
+        gender = request.form["gender"]
+        age = request.form["age"]
+        change_info(fname, lname, gender, age, email)
+    return render_template('info_changed.html')
+
+def change_info(fname, lname, gender, age, email):
+    connection = sql.connect('user.sqlite')
+    connection.execute('UPDATE Bidders SET first_name = ?, last_name = ?, gender = ?, age = ? WHERE email = ?;',
+                       (fname, lname, gender, age, email))
+    connection.commit()
+    return True
 @app.route('/browse', methods=['POST', 'GET'])
 def browse():
     connection = sql.connect('user.sqlite')
